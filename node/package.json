@@ -1,0 +1,25 @@
+{
+  "name": "desktop-import",
+  "version": "1.0.0",
+  "description": "electron basic",
+  "main": "electron-main.js",
+  "mainX": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "electron . --js-flags=\"--expose-gc\"",
+    "startX1": "electron . ",
+    "startX": "electron . --js-flags=\"--max-old-space-size=4096\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Henry Thompson",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^32.0.1"
+  },
+  "dependencies": {
+    "firebase": "^10.13.1"
+  }
+}
