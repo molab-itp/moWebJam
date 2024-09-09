@@ -3,14 +3,11 @@ const { webFrame, ipcRenderer } = require('electron');
 
 let my = {};
 window.my = my;
-my.gcCount = 0;
-my.margin = 32;
-my.overlayColors = ['rgba(255, 80, 80, 1.0)', 'rgba(255, 180, 60, 1.0)', 'rgba(60, 190, 70, 1.0)'];
-my.overlayColorsIndex = 0;
-my.scrollYTopShort = 760;
-// my.scrollYTopShort = 580;
-my.scrollYTopLong = 616;
-// my.scrollYTopLong = 460;
+
+// my.scrollYTopShort = 760;
+my.scrollYTopShort = 580;
+// my.scrollYTopLong = 616;
+my.scrollYTopLong = 460;
 
 // my.scrollPeriod = 0.1; // * 0.75;
 // my.elineDelayPeriod = 30; // * 0.75;
@@ -21,8 +18,13 @@ my.scrollYTopLong = 616;
 my.scrollPeriod = 0.1;
 my.elineDelayPeriod = 30 * 0.5;
 
-my.zoomFactorLong = 2.18;
 my.zoomFactorShort = 1.4;
+my.zoomFactorLong = 2.18;
+
+my.gcCount = 0;
+my.margin = 32;
+my.overlayColors = ['rgba(255, 80, 80, 1.0)', 'rgba(255, 180, 60, 1.0)', 'rgba(60, 190, 70, 1.0)'];
+my.overlayColorsIndex = 0;
 
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(setup_scroll, 1000);
