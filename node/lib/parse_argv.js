@@ -34,6 +34,13 @@ export function parse_argv(my, argv) {
   for (let index = 2; index < argv.length; index++) {
     let val = argv[index];
     switch (val) {
+      case '--full':
+        // my.opt.fullScreen = true;
+        my.opt.fullScreen = parseFloat(argv[++index]);
+        break;
+      case '--group':
+        my.group = argv[++index];
+        break;
       case '--mo_app':
         my.mo_app = parseFloat(argv[++index]);
         break;
@@ -68,9 +75,6 @@ export function parse_argv(my, argv) {
       case '--ddebug':
         my.opt.debug = true;
         my.opt.h = 0;
-        break;
-      case '--full':
-        my.opt.fullScreen = true;
         break;
       case '--screen':
         my.opt.index = argv[++index];

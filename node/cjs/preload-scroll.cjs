@@ -6,6 +6,8 @@ require('./overlayElement.cjs');
 let my = {};
 window.my = my;
 
+my.shortStopLineNum = 5;
+
 // my.scrollYTopShort = 760;
 my.scrollYTopShort = 580;
 // my.scrollYTopLong = 616;
@@ -102,8 +104,10 @@ function scroll_track() {
   // For Langstons' "America..." this is line 8 of poem
   // in full read the image is below the last line of poem
 
+  let stopped = !my.full_read_enabled && my.elineIndex == my.shortStopLineNum - 1;
+
   let rt = my.authorImageDiv.getBoundingClientRect();
-  if (rt.y < 0) {
+  if (rt.y < 0 || stopped) {
     // play_from_top();
     pause_at_bottom();
   }

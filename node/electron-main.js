@@ -78,7 +78,7 @@ app.whenReady().then(() => {
     height,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload-scroll.cjs'),
+      preload: path.join(__dirname, './cjs/preload-scroll.cjs'),
       // zoomLevel: my.zoom_factor, // 1.8,
     },
   });
@@ -119,8 +119,8 @@ app.whenReady().then(() => {
     my.mainWindow.webContents.send('full-read', 1);
   };
 
-  console.log('my.room', my.room);
-  if (my.room) {
+  console.log('my.group', my.group, 'my.roomName', my.roomName);
+  if (my.group) {
     dbase_init(my);
   }
 });

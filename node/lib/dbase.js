@@ -8,12 +8,16 @@ export function dbase_init(my) {
   // my.fireb_config = 'jhtitp';
 
   my.dbase_rootPath = 'm0-@r-@w-';
-  my.roomName = 'm0-america';
+  my.roomName = 'm1-america';
   my.mo_app = 'mo-america-rewind';
   // -election excludes this device from status count report
   my.nameDevice = 'america-electron';
   // set group for all devices to share item values
-  my.group = 's0';
+  my.group = my.group || 's0';
+
+  if (my.group == 's0') {
+    my.roomName = 'm0-america';
+  }
 
   dbase_app_init({ completed: app_init_completed });
 }
