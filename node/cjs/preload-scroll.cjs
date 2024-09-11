@@ -54,12 +54,11 @@ window.addEventListener('mouseup', function (event) {
   my.scrollEnabled = !my.scrollEnabled;
 });
 
-window.addEventListener('resize', window_resize_handler);
-
-function window_resize_handler() {
-  console.log('window_resize_handler');
-  position_qrcode();
-}
+// window.addEventListener('resize', window_resize_handler);
+// function window_resize_handler() {
+//   console.log('window_resize_handler');
+//   position_qrcode();
+// }
 
 function setup_scroll() {
   //
