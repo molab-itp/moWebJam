@@ -39,6 +39,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let zoomFactor = webFrame.getZoomFactor();
   console.log('zoomFactor', zoomFactor);
+
+  dbase_report_status({ msg: 'Here!' });
 });
 
 window.addEventListener('mouseup', function (event) {
@@ -207,3 +209,44 @@ function check_scroll_pause() {
 // let my.scrollYTop = 635;
 // window.innerWidth 520
 // my.lastScrollY;
+
+function createStatusElement() {
+  if (!document) return;
+  if (!my.statusElement) {
+    my.statusElement = document.createElement('span');
+    document.body.appendChild(my.statusElement);
+    my.statusElement.style.position = 'fixed';
+    my.statusElement.style.pointerEvents = 'none';
+  }
+
+  let h = 10;
+  let x = 0;
+
+  my.statusElement.style.position = 'fixed';
+  my.statusElement.style.bottom = '0';
+  my.statusElement.style.left = `${x}px`;
+  my.statusElement.style.width = `100%`;
+
+  my.statusElement.style.zIndex = 1000;
+  my.statusElement.style.backgroundColor = 'black';
+  // my.statusElement.style.backgroundColor = 'green';
+  my.statusElement.style.color = 'white';
+  my.statusElement.style.fontSize = `${h}px`;
+  my.statusElement.style.padding = '1px 2px';
+}
+// globalThis.dbase_positionStatus = dbase_positionStatus;
+
+function dbase_report_status(props) {
+  if (!my.statusElement) {
+    createStatusElement();
+    if (!my.statusElement) return;
+  }
+  let msg = props.msg || '';
+  if (msg) msg = msg + ' ';
+  let muid = my.uid || '';
+  let uid = props.uid || '';
+  let visit_count = props.visit_count || '';
+  let ndevice = props.ndevice || '';
+  my.statusElement.textContent = `${msg}${muid} ${uid} (${visit_count}) [${ndevice}]`;
+}
+globalThis.dbase_report_status = dbase_report_status;
