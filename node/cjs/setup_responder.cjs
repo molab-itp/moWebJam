@@ -43,6 +43,11 @@ function send_current_line() {
 // exports.modules.send_current_line = send_current_line;
 globalThis.send_current_line = send_current_line;
 
+// lineInfo = { num, text }
+function send_lineInfo(lineInfo) {
+  ipcRenderer.send('set-line-info', lineInfo);
+}
+
 function play_from_top_short() {
   if (my.full_read_enabled) {
     webFrame.setZoomFactor(my.zoomFactorShort);
@@ -52,11 +57,6 @@ function play_from_top_short() {
 }
 // exports.modules.play_from_top_short = play_from_top_short;
 globalThis.play_from_top_short = play_from_top_short;
-
-// lineInfo = { num, text }
-function send_lineInfo(lineInfo) {
-  ipcRenderer.send('set-line-info', lineInfo);
-}
 
 function play_from_top_long() {
   if (!my.full_read_enabled) {
