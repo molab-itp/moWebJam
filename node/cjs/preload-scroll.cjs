@@ -14,6 +14,7 @@ my.shortStopLineNum = 5;
 // my.scrollYTopShort = 760;
 // my.scrollYTopShort = 580;
 my.scrollYTopShort = 610;
+
 // my.scrollYTopLong = 616;
 my.scrollYTopLong = 460;
 
@@ -219,5 +220,3 @@ function check_scroll_pause() {
 // let my.scrollYTop = 635;
 // window.innerWidth 520
 // my.lastScrollY;
-
-

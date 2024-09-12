@@ -112,6 +112,13 @@ app.whenReady().then(() => {
   // setInterval(function () {
   //   my.mainWindow.webContents.send('rewind', 1);
   // }, 7 * 1000);
+
+  my.dbase_status_reporter = (msg) => {
+    // console.log('my.dbase_status_reporter msg', msg);
+    my.mainWindow.webContents.send('dbase-status', msg);
+    // my.mainWindow.webContents.send('dbase-status', 'hello');
+    // console.log('my.dbase_status_reporter AFTER');
+  };
   my.rewind_action = () => {
     my.mainWindow.webContents.send('rewind', 1);
   };

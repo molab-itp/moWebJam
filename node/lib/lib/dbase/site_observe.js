@@ -63,9 +63,27 @@ function dbase_fireb_device(uid, val) {
     // device must be inited to record visit event
     dbase_site_event_visit();
   }
+  let visit_count = device.dbase.visit_count;
+  let ndevice = count_client_devices();
+  dbase_report_status({ uid, visit_count, ndevice });
   return device;
 }
 globalThis.dbase_fireb_device = dbase_fireb_device;
+
+// Only count devices that dont contain '-electron' in the name_s field
+//
+function count_client_devices() {
+  Object.keys(my.fireb_devices).length;
+  let count = 0;
+  Object.entries(my.fireb_devices).map((ent) => {
+    let dev = ent[1];
+    // console.log('dev', dev);
+    if (dev.dbase.name_s.indexOf('-electron') < 0) {
+      count++;
+    }
+  });
+  return count;
+}
 
 //
 //

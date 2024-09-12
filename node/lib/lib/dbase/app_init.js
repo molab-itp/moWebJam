@@ -12,11 +12,15 @@ function dbase_app_init({ completed }) {
   console.log('configLabel', config.configLabel);
   console.log('room', my.roomName);
 
+  dbase_report_status({ msg: 'Starting...' });
+
   let { signInAnonymously, auth } = fireb_;
   signInAnonymously(auth)
     .then(() => {
       my.uid = auth.currentUser.uid;
       console.log('dbase_app_init my.uid', my.uid);
+
+      dbase_report_status({});
 
       dbase_site_observe();
 
@@ -68,3 +72,57 @@ function dbase_site_devices(show) {
   return arr;
 }
 globalThis.dbase_site_devices = dbase_site_devices;
+
+function createStatusElement() {
+  // console.log('createStatusElement globalThis.document', globalThis.document);
+  if (!globalThis.document) return;
+  if (!my.statusElement) {
+    my.statusElement = document.createElement('span');
+    document.body.appendChild(my.statusElement);
+    my.statusElement.style.position = 'fixed';
+    my.statusElement.style.pointerEvents = 'none';
+  }
+
+  let h = 10;
+  let x = 0;
+
+  my.statusElement.style.position = 'fixed';
+  my.statusElement.style.bottom = '0';
+  my.statusElement.style.left = `${x}px`;
+  my.statusElement.style.width = `100%`;
+
+  my.statusElement.style.zIndex = 1000;
+  my.statusElement.style.backgroundColor = 'black';
+  // my.statusElement.style.backgroundColor = 'green';
+  my.statusElement.style.color = 'white';
+  my.statusElement.style.fontSize = `${h}px`;
+  my.statusElement.style.padding = '1px 2px';
+}
+// globalThis.dbase_positionStatus = dbase_positionStatus;
+
+function dbase_report_status(props) {
+  if (!my.statusElement) {
+    createStatusElement();
+  }
+  let msg = props.msg;
+  if (!msg) {
+    let muid = my.uid || '';
+    let uid = props.uid || '';
+    let visit_count = props.visit_count || '';
+    let ndevice = props.ndevice || '';
+    msg = `${muid} ${uid} (${visit_count}) [${ndevice}]`;
+  }
+  // console.log('createStatusElement my.statusElement', my.statusElement);
+  // console.log('createStatusElement msg', msg);
+  // console.log('createStatusElement my.dbase_status_reporter', my.dbase_status_reporter, 'msg', msg);
+  if (my.dbase_status_reporter) {
+    my.dbase_status_reporter(msg);
+  }
+  if (!my.statusElement) return;
+  my.statusElement.textContent = msg;
+}
+globalThis.dbase_report_status = dbase_report_status;
+
+// https://chatgpt.com/
+// html css to keep element at the bottome of the window when window is scrolled
+//
