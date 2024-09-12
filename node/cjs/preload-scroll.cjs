@@ -11,6 +11,7 @@ my.qrCodeWidth = 0.25;
 
 my.shortStopLineNum = 5;
 
+// my.scrollYTopShort = 670;
 // my.scrollYTopShort = 760;
 // my.scrollYTopShort = 580;
 my.scrollYTopShort = 610;
