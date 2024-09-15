@@ -9,7 +9,7 @@ export function dbase_init(my) {
 
   my.dbase_rootPath = 'm0-@r-@w-';
   my.roomName = 'm1-america';
-  my.mo_app = 'mo-america-rewind';
+  my.mo_app = 'mo-america-be';
   // -election excludes this device from status count report
   my.nameDevice = 'america-electron';
   // set group for all devices to share item values
