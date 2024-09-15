@@ -36,9 +36,10 @@ my.margin = 32;
 my.overlayColors = ['rgba(255, 80, 80, 1.0)', 'rgba(255, 180, 60, 1.0)', 'rgba(60, 190, 70, 1.0)'];
 my.overlayColorsIndex = 0;
 
+setup_responder();
+
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(setup_scroll, 1000);
-  setup_responder();
 
   webFrame.setZoomFactor(my.zoomFactorShort);
   // webFrame.setZoomFactor(my.zoomFactorLong);

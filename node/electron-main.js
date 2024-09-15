@@ -129,6 +129,8 @@ app.whenReady().then(() => {
   console.log('my.group', my.group, 'my.roomName', my.roomName);
   if (my.group) {
     dbase_init(my);
+
+    my.mainWindow.webContents.send('init-my', { group: my.group });
   }
 });
 

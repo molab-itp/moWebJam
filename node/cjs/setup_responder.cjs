@@ -10,6 +10,11 @@ ipcMain.on('set-line-info', (event, lineInfo) => {
 */
 
 function setup_responder() {
+  ipcRenderer.on('init-my', (_event, props) => {
+    console.log('ipcRenderer.on init-my', props);
+    Object.assign(my, props);
+    init_qrcode_url();
+  });
   ipcRenderer.on('rewind', (_event, value) => {
     console.log('ipcRenderer.on rewind', value);
     play_from_top_short();
@@ -21,6 +26,7 @@ function setup_responder() {
   ipcRenderer.on('dbase-status', (_event, msg) => {
     // ipcRenderer.on('dbase_status_report', (_event, value) => {
     // console.log('ipcRenderer.on dbase_status_report msg', msg);
+    // dbase_status_reporter
     dbase_report_status({ msg });
   });
 }

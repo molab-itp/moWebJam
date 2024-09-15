@@ -35,8 +35,8 @@ function dbase_app_observe({ observed_key, removed_key, observed_item }, options
     let key = data.key;
     let value = data.val();
     // ui_log(msg, key, 'n=', Object.keys(val).length);
-    // ui_log(msg, 'key', key, 'value', value);
-    ui_log(msg, 'key', key, JSON.stringify(value));
+    ui_log(msg, 'key', key, 'value', value);
+    // ui_log(msg, 'key', key, JSON.stringify(value));
     if (remove) {
       if (removed_key) {
         removed_key(key, value);
