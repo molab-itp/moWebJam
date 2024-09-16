@@ -228,6 +228,7 @@ globalThis.line_previous = line_previous;
 function line_continue() {
   my.scrollEnabled = 1;
   my.focusEnabled = 0;
+  my.elineDelayCount = 0;
 }
 globalThis.line_continue = line_continue;
 
