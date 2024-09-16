@@ -12,7 +12,7 @@ quiet=--quiet
 # switch back to branch next
 #
 
-./p5moLibrary/bin/build.sh --src ./ --files src,README.md --prod $quiet
+# ./p5moLibrary/bin/build.sh --src ./ --files src,README.md --prod $quiet
 
 git add . 
 git commit $quiet -m "`cat gen/build_ver.txt`"
