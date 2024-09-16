@@ -125,6 +125,15 @@ app.whenReady().then(() => {
   my.full_read_action = () => {
     my.mainWindow.webContents.send('full-read', 1);
   };
+  my.next_action = () => {
+    my.mainWindow.webContents.send('next', 1);
+  };
+  my.previous_action = () => {
+    my.mainWindow.webContents.send('previous', 1);
+  };
+  my.continue_action = () => {
+    my.mainWindow.webContents.send('continue', 1);
+  };
 
   console.log('my.group', my.group, 'my.roomName', my.roomName);
   if (my.group) {

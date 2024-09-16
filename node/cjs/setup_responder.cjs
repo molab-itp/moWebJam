@@ -10,6 +10,18 @@ ipcMain.on('set-line-info', (event, lineInfo) => {
 */
 
 function setup_responder() {
+  ipcRenderer.on('next', (_event, value) => {
+    console.log('ipcRenderer.on next', value);
+    line_next();
+  });
+  ipcRenderer.on('previous', (_event, value) => {
+    console.log('ipcRenderer.on previous', value);
+    line_previous();
+  });
+  ipcRenderer.on('continue', (_event, value) => {
+    console.log('ipcRenderer.on continue', value);
+    line_continue():
+  });
   ipcRenderer.on('init-my', (_event, props) => {
     console.log('ipcRenderer.on init-my', props);
     Object.assign(my, props);

@@ -174,7 +174,7 @@ function check_line_hilite() {
   }
 
   // if line is off top screen
-  // search now for line that's on at mid window point
+  // search down for line that's on at mid window point
   if (rt.y < 0) {
     // Hilite scroll off top of screen
     let lastLine = my.elineIndex;
@@ -192,12 +192,47 @@ function check_line_hilite() {
     my.offscreen = 0;
   }
 
-  if (!my.scrollEnabled) return;
+  if (!my.scrollEnabled) {
+    return;
+  }
 
-  // Advance to the next line
+  advance_next_line();
+}
+globalThis.check_line_hilite = check_line_hilite;
+
+// Advance to the next line
+function advance_next_line() {
+  delta_next_line(1);
+}
+
+function line_next() {
+  delta_next_line(1);
+  my.scrollEnabled = 0;
+  focus_line();
+}
+globalThis.line_next = line_next;
+
+function line_previous() {
+  delta_next_line(-1);
+  my.scrollEnabled = 0;
+  focus_line();
+}
+globalThis.line_previous = line_previous;
+
+function line_continue() {
+  my.scrollEnabled = 1;
+}
+globalThis.line_continue = line_continue;
+
+function focus_line() {
+  //
+}
+
+function delta_next_line(delta) {
+  //
   my.last_elineIndex = my.elineIndex;
-  my.elineIndex = (my.elineIndex + 1) % my.elines.length;
-  my.overlayColorsIndex = (my.overlayColorsIndex + 1) % my.overlayColors.length;
+  my.elineIndex = (my.elineIndex + delta + my.elines.length) % my.elines.length;
+  my.overlayColorsIndex = (my.overlayColorsIndex + delta + my.overlayColors.length) % my.overlayColors.length;
 
   if (my.elineIndex) {
     send_current_line();

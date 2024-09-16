@@ -31,8 +31,10 @@ function app_init_completed() {
   function observed_item(item) {
     //
     dbase_if_action({ item, prop: 'action_rewind', actionFunc: my.rewind_action });
-
     dbase_if_action({ item, prop: 'action_full_read', actionFunc: my.full_read_action });
+    dbase_if_action({ item, prop: 'action_next', actionFunc: my.next_action });
+    dbase_if_action({ item, prop: 'action_previous', actionFunc: my.previous_action });
+    dbase_if_action({ item, prop: 'action_continue', actionFunc: my.continue_action });
   }
 }
 
