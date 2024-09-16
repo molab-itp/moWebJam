@@ -74,7 +74,7 @@ function createQRCode() {
   my.footerElement.style.left = '0';
   my.footerElement.style.zIndex = 999;
   my.footerElement.style.width = '100%';
-  my.footerElement.style.height = '192px';
+  my.footerElement.style.height = my.footerHeight; // '192px';
   my.footerElement.style.backgroundColor = 'black';
   my.footerElement.style.color = 'white';
   my.footerElement.innerHTML = footerText; // 'HELLO';
@@ -87,7 +87,7 @@ function createQRCode() {
   my.qrcodeElement.style.bottom = '0';
   my.qrcodeElement.style.right = '0';
   my.qrcodeElement.style.zIndex = 1000;
-  my.qrcodeElement.style.width = `${Math.floor(100 * my.qrCodeWidth)}%`;
+  my.qrcodeElement.style.width = my.qrCodeWidth; // `${Math.floor(100 * my.qrCodeWidth)}%`;
 
   my.qrcodeElement.src = qrcode_url();
 

@@ -7,7 +7,9 @@ require('./dbase_report_status.cjs');
 let my = {};
 window.my = my;
 
-my.qrCodeWidth = 0.25;
+my.lineHeight = 28;
+my.footerHeight = '192px';
+my.qrCodeWidth = '25%';
 
 my.shortStopLineNum = 5;
 
@@ -239,7 +241,7 @@ function focus_line() {
   overlayElement(el);
 
   let midWindow = window.innerHeight / 2;
-  if (rt.y < midWindow || rt.y > midWindow + 28) {
+  if (rt.y < midWindow || rt.y > midWindow + my.lineHeight) {
     let diff = rt.y - midWindow;
     window.scrollBy(0, diff);
   }
