@@ -15,17 +15,14 @@ quiet=--quiet
 # ./p5moLibrary/bin/build.sh --src ./ --files src,README.md --prod $quiet
 
 
-# File where the value is stored
+# Increatement build number
 NUMFILE="gen/build_ver.txt"
 if [[ -f "$NUMFILE" ]]; then
   current_value=$(<"$NUMFILE")
 else
-  echo "NUMFILE does not exist. Initializing value to 0."
   current_value=0
 fi
-# Increment the value
 new_value=$((current_value + 1))
-# Write the new value back to the NUMFILE
 echo "$new_value" > "$NUMFILE"
 
 git add . 
