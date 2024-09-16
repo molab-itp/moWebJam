@@ -20,7 +20,7 @@ function setup_responder() {
   });
   ipcRenderer.on('continue', (_event, value) => {
     console.log('ipcRenderer.on continue', value);
-    line_continue():
+    line_continue();
   });
   ipcRenderer.on('init-my', (_event, props) => {
     console.log('ipcRenderer.on init-my', props);

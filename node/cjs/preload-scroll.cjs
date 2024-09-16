@@ -109,7 +109,12 @@ function scroll_track() {
 
   check_scroll_pause();
 
-  check_line_hilite();
+  if (my.focusEnabled) {
+    focus_line();
+    return;
+  } else {
+    check_line_hilite();
+  }
 
   if (!my.scrollEnabled) return;
   window.scrollBy(0, 1);
@@ -145,6 +150,7 @@ function pause_at_bottom() {
 }
 
 function check_line_hilite() {
+  //
   // Keep up last hilite until starting from the top
   if (my.last_elineIndex == my.elines.length - 1) {
     let rt = my.elines[0].getBoundingClientRect();
@@ -208,24 +214,37 @@ function advance_next_line() {
 function line_next() {
   delta_next_line(1);
   my.scrollEnabled = 0;
-  focus_line();
+  my.focusEnabled = 1;
 }
 globalThis.line_next = line_next;
 
 function line_previous() {
   delta_next_line(-1);
   my.scrollEnabled = 0;
-  focus_line();
+  my.focusEnabled = 1;
 }
 globalThis.line_previous = line_previous;
 
 function line_continue() {
   my.scrollEnabled = 1;
+  my.focusEnabled = 0;
 }
 globalThis.line_continue = line_continue;
 
 function focus_line() {
   //
+  let el = my.elines[my.elineIndex];
+  let rt = el.getBoundingClientRect();
+  overlayElement(el);
+
+  let midWindow = window.innerHeight / 2;
+  if (rt.y < midWindow) {
+    window.scrollBy(0, -1);
+  } else if (rt.y > midWindow + 28) {
+    window.scrollBy(0, 1);
+  }
+
+  send_current_line();
 }
 
 function delta_next_line(delta) {
