@@ -15,7 +15,7 @@ quiet=--quiet
 # ./p5moLibrary/bin/build.sh --src ./ --files src,README.md --prod $quiet
 
 
-# Increatement build number
+# Increment build number
 NUMFILE="gen/build_ver.txt"
 if [[ -f "$NUMFILE" ]]; then
   current_value=$(<"$NUMFILE")

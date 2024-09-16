@@ -243,7 +243,7 @@ function focus_line() {
   let midWindow = window.innerHeight / 2;
   if (rt.y < midWindow || rt.y > midWindow + my.lineHeight) {
     let diff = rt.y - midWindow;
-    window.scrollBy(0, diff);
+    window.scrollBy(0, diff * 0.1);
   }
 
   send_current_line();
