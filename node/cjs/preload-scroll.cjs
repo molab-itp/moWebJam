@@ -238,10 +238,9 @@ function focus_line() {
   overlayElement(el);
 
   let midWindow = window.innerHeight / 2;
-  if (rt.y < midWindow) {
-    window.scrollBy(0, -1);
-  } else if (rt.y > midWindow + 28) {
-    window.scrollBy(0, 1);
+  if (rt.y < midWindow || rt.y > midWindow + 28) {
+    let diff = rt.y - midWindow;
+    window.scrollBy(0, diff);
   }
 
   send_current_line();
