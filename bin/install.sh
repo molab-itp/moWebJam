@@ -17,7 +17,7 @@ if [ ! -e "$dest" ]; then
   exit
 fi
 
-cd node/lib
-if [ ! -e "lib" ]; then
-  ln -s ../../../moLib/src/lib
+libTarget=node/lib/moLib
+if [ ! -e "$libTarget" ]; then
+  cp -r $dest/src/lib $libTarget
 fi

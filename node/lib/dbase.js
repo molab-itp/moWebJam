@@ -38,24 +38,6 @@ function app_init_completed() {
   }
 }
 
-// dbase_if_action(item.action_rewind, 'action_rewind', my.rewind_action)
-// !!@ dbase_if_action --> p5moLibrary
-function dbase_if_action({ item, prop, actionFunc }) {
-  let count = item[prop];
-  if (count != null) {
-    if (my[prop] && count != my[prop]) {
-      // trigger action
-      console.log('triggering action', prop, 'old count', my[prop], 'new count', count);
-      actionFunc();
-    }
-    my[prop] = count;
-  }
-}
-// !!@ dbase_issue_action to p5moLibrary
-// function dbase_issue_action(prop) {
-// dbase_issue_action is complement by dbase_if_action
-//
-
 function ui_log(...args) {
   console.log(...args);
 }
@@ -67,3 +49,15 @@ function ui_error(...args) {
   // alert(...args);
 }
 globalThis.ui_error = ui_error;
+
+function dbase_if_action({ item, prop, actionFunc }) {
+  let count = item[prop];
+  if (count != null) {
+    if (my[prop] && count != my[prop]) {
+      // trigger action
+      console.log('triggering action', prop, 'old count', my[prop], 'new count', count);
+      actionFunc();
+    }
+    my[prop] = count;
+  }
+}
