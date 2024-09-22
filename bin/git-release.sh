@@ -29,13 +29,13 @@ git add .
 git commit $quiet -m "`cat $NUMFILE`"
 git push $quiet
 
-# in main
-git checkout main $quiet
-git merge next $quiet -m "`cat $NUMFILE`"
+# in release
+git checkout release $quiet
+git merge main $quiet -m "`cat $NUMFILE`"
 git push $quiet
 
-# in next
-git checkout next $quiet
+# in main
+git checkout main $quiet
 
 echo
 echo "build `cat gen/build_ver.txt`"
