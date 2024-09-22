@@ -1,6 +1,16 @@
 //
 
 import './lib/dbase/a_dbase.js';
+// import './moLib/dbase/a_dbase.js';
+
+// !!@ electron loader does not accept moLib which is copy from repo
+// !!@ best make moLib a npm package
+// !!@ Need to convert to import without http
+/*
+import {
+  initializeApp, //
+} from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+*/
 
 export function dbase_init(my) {
   my.fireb_config = 'jht9629';
