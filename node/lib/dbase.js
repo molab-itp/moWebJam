@@ -1,6 +1,7 @@
 //
 
-import './lib/dbase/a_dbase.js';
+import 'itp-molib2';
+// import './lib/dbase/a_dbase.js';
 // import './moLib/dbase/a_dbase.js';
 
 // !!@ electron loader does not accept moLib which is copy from repo
@@ -11,6 +12,8 @@ import {
   initializeApp, //
 } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
 */
+
+// console.log('globalThis', globalThis);
 
 export function dbase_init(my) {
   my.fireb_config = 'jht9629';
