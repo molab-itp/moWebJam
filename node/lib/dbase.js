@@ -61,15 +61,3 @@ function ui_error(...args) {
   // alert(...args);
 }
 globalThis.ui_error = ui_error;
-
-function dbase_if_action({ item, prop, actionFunc }) {
-  let count = item[prop];
-  if (count != null) {
-    if (my[prop] && count != my[prop]) {
-      // trigger action
-      console.log('triggering action', prop, 'old count', my[prop], 'new count', count);
-      actionFunc();
-    }
-    my[prop] = count;
-  }
-}

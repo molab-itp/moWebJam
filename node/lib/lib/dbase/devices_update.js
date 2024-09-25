@@ -146,3 +146,19 @@ function dbase_devices_issue_actions(actions, options) {
   dbase_devices_update(nactions, options);
 }
 globalThis.dbase_devices_issue_actions = dbase_devices_issue_actions;
+
+//
+// simpler version of dbase_devices_issue_actions
+//
+function dbase_if_action({ item, prop, actionFunc }) {
+  let count = item[prop];
+  if (count != null) {
+    if (my[prop] && count != my[prop]) {
+      // trigger action
+      console.log('triggering action', prop, 'old count', my[prop], 'new count', count);
+      actionFunc();
+    }
+    my[prop] = count;
+  }
+}
+globalThis.dbase_if_action = dbase_if_action;
