@@ -1,8 +1,7 @@
 //
 
-import 'itp-molib';
-// import './lib/dbase/a_dbase.js';
-// import './moLib/dbase/a_dbase.js';
+// import 'itp-molib';
+import './lib/dbase/a_dbase.js';
 
 // !!@ electron loader does not accept moLib which is copy from repo
 // !!@ best make moLib a npm package

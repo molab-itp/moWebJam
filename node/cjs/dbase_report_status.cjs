@@ -57,7 +57,9 @@ function qrcode_url() {
 //     <img src="../../qrcode/mo-blackfacts-qrcode.png" width="300" id="id_qrcode_src" /></div>
 
 function init_qrcode_url() {
-  my.qrcodeElement.src = qrcode_url();
+  if (my.qrcodeElement) {
+    my.qrcodeElement.src = qrcode_url();
+  }
 }
 globalThis.init_qrcode_url = init_qrcode_url;
 
