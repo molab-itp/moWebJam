@@ -1,6 +1,6 @@
 //
 
-import 'itp-molib2';
+import 'itp-molib';
 // import './lib/dbase/a_dbase.js';
 // import './moLib/dbase/a_dbase.js';
 
