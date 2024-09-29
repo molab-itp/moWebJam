@@ -34,6 +34,9 @@ export function parse_argv(my, argv) {
   for (let index = 2; index < argv.length; index++) {
     let val = argv[index];
     switch (val) {
+      case '--preload':
+        my.preload_arg = argv[++index];
+        break;
       case '--full':
         // my.opt.fullScreen = true;
         my.opt.fullScreen = parseFloat(argv[++index]);

@@ -70,17 +70,22 @@ app.whenReady().then(() => {
     console.log('x', x, 'width', width, 'height', height);
   }
   // console.log('my.zoom_level', my.zoom_level);
+  let webPreferences = {
+    nodeIntegration: true,
+    preload: path.join(__dirname, './cjs/preload-scroll.cjs'),
+    // zoomLevel: my.zoom_factor, // 1.8,
+  };
+  if (my.preload_arg != undefined) {
+    webPreferences.preload = my.preload_arg;
+  }
+  console.log('my.preload_arg |' + my.preload_arg + '|');
 
   my.mainWindow = new BrowserWindow({
     x,
     y,
     width,
     height,
-    webPreferences: {
-      nodeIntegration: true,
-      preload: path.join(__dirname, './cjs/preload-scroll.cjs'),
-      // zoomLevel: my.zoom_factor, // 1.8,
-    },
+    webPreferences,
   });
 
   if (my.opt.debug) {
