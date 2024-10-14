@@ -42,13 +42,13 @@ export function parse_argv(my, argv) {
         my.opt.fullScreen = parseFloat(argv[++index]);
         break;
       case '--group':
-        my.group = argv[++index];
+        my.mo_group = argv[++index];
         break;
-      case '--mo_app':
-        my.mo_app = parseFloat(argv[++index]);
+      case '--app':
+        my.mo_app = argv[++index];
         break;
       case '--room':
-        my.room = argv[++index];
+        my.mo_room = argv[++index];
         break;
       case '--portrait':
         my.portrait = parseFloat(argv[++index]);

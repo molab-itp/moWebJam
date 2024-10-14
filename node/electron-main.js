@@ -38,8 +38,9 @@ console.log('opt', my.opt);
 
 app.whenReady().then(() => {
   ipcMain.on('set-line-info', (event, line) => {
-    // dbase_update_item({ num, text });
+    console.log('set-line-info line', line);
     dbase_update_item({ line });
+    console.log('set-line-info post dbase_update_item');
   });
 
   const screens = screen.getAllDisplays();
@@ -140,11 +141,12 @@ app.whenReady().then(() => {
     my.mainWindow.webContents.send('continue', 1);
   };
 
-  console.log('my.group', my.group, 'my.roomName', my.roomName);
-  if (my.group) {
+  console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
+
+  if (my.mo_group) {
     dbase_init(my);
 
-    my.mainWindow.webContents.send('init-my', { group: my.group });
+    my.mainWindow.webContents.send('init-my', { mo_group: my.mo_group });
   }
 });
 

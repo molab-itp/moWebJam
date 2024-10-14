@@ -19,6 +19,6 @@
   "devDependencies": {
     "electron": "^32.0.1",
     "firebase": "^10.13.1",
-    "itp-molib": "^0.1.12"
+    "itp-molib": "^0.1.19"
   }
 }

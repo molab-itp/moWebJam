@@ -8,7 +8,7 @@ function dbase_app_observe({ observed_key, removed_key, observed_item }, options
     tag = options.tag || tag;
   }
   // Setup listener for changes to firebase db device
-  let path = `${my.dbase_rootPath}/${my.roomName}/${app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}/${app}`;
   if (observed_item) {
     path += '/a_group';
   }
@@ -58,11 +58,11 @@ function dbase_app_observe({ observed_key, removed_key, observed_item }, options
   }
 
   function group_key() {
-    let group = my && my.group;
+    let group = my && my.mo_group;
     if (!group) group = 's0';
     // broadcast group when has comma separated values
     if (group.indexOf(',') > -1) {
-      // my.group=s1,s2,... --> group=s0
+      // my.mo_group=s1,s2,... --> group=s0
       // Special group 's0' recieves all updates
       group = 's0';
     }
@@ -73,11 +73,11 @@ globalThis.dbase_app_observe = dbase_app_observe;
 
 // issue dbase_update_props to group
 function dbase_update_item(item) {
-  let group = my && my.group;
+  let group = my && my.mo_group;
   if (!group) group = 's0';
   // broadcast group when has comma separated values
   if (group.indexOf(',') > -1) {
-    // my.group=s1,s2,... --> group=s0,s1,s2,...
+    // my.mo_group=s1,s2,... --> group=s0,s1,s2,...
     // Special group 's0' recieves all updates
     group = 's0,' + group;
   }
@@ -85,9 +85,9 @@ function dbase_update_item(item) {
 }
 globalThis.dbase_update_item = dbase_update_item;
 
-// issue dbase_update_props to group if my.group present
+// issue dbase_update_props to group if my.mo_group present
 function dbase_group_update(item) {
-  let group = my && my.group;
+  let group = my && my.mo_group;
   if (group) {
     dbase_update_item(item);
   } else {
@@ -97,7 +97,7 @@ function dbase_group_update(item) {
 globalThis.dbase_group_update = dbase_group_update;
 
 function dbase_group_observe(props, options) {
-  let group = my && my.group;
+  let group = my && my.mo_group;
   if (group) {
     dbase_app_observe(props, options);
   } else {

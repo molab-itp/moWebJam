@@ -25,7 +25,7 @@ function dbase_update_props(props, options) {
   if (!my.uid) {
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.roomName}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
   let { getRefPath, update, increment } = fireb_.fbase;
   let refPath = getRefPath(path);
 
@@ -85,7 +85,7 @@ function dbase_update_value(value, apps) {
     ui_log(tag + ' no uid', my.uid);
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.roomName}/${app}/${my.uid}${suffix}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}/${app}/${my.uid}${suffix}`;
   let { getRefPath, update } = fireb_.fbase;
   let refPath = getRefPath(path);
 
@@ -104,7 +104,7 @@ globalThis.dbase_increment = dbase_increment;
 //
 function dbase_remove_room() {
   //
-  let path = `${my.dbase_rootPath}/${my.roomName}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}`;
   let { getRefPath, set } = fireb_.fbase;
   let refPath = getRefPath(path);
   set(refPath, {})
@@ -122,7 +122,7 @@ globalThis.dbase_remove_room = dbase_remove_room;
 //
 function dbase_remove_mo_app() {
   //
-  let path = `${my.dbase_rootPath}/${my.roomName}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
   let { getRefPath, set } = fireb_.fbase;
   let refPath = getRefPath(path);
   set(refPath, {})

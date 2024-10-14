@@ -17,7 +17,7 @@ async function fstorage_upload({ layer, path, imageQuality }) {
   }
   // console.log('last4', last4, 'imageType', imageType);
 
-  let imagePath = `${my.dbase_rootPath}/${my.roomName}/${path}`;
+  let imagePath = `${my.dbase_rootPath}/${my.mo_room}/${path}`;
 
   let blob = await getBlob(layer.elt, imageType, imageQuality);
 
@@ -52,7 +52,7 @@ async function fstorage_remove({ path }) {
     ui_error('fstorage_remove missing path', path);
     return;
   }
-  let imagePath = `${my.dbase_rootPath}/${my.roomName}/${path}`;
+  let imagePath = `${my.dbase_rootPath}/${my.mo_room}/${path}`;
 
   let { getStorage, ref, deleteObject } = fireb_.fstorage;
   const desertRef = ref(getStorage(), imagePath);
@@ -64,7 +64,7 @@ globalThis.fstorage_remove = fstorage_remove;
 async function fstorage_download_url({ path }) {
   // console.log('fstorage_img_download ');
 
-  let imagePath = `${my.dbase_rootPath}/${my.roomName}/${path}`;
+  let imagePath = `${my.dbase_rootPath}/${my.mo_room}/${path}`;
 
   let { getStorage, ref, getDownloadURL } = fireb_.fstorage;
 

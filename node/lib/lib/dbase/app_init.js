@@ -10,7 +10,7 @@ function dbase_app_init({ completed }) {
   console.log('configVersion', config.configVersion);
   console.log('config.projectId', config.projectId);
   console.log('configLabel', config.configLabel);
-  console.log('room', my.roomName);
+  console.log('room', my.mo_room);
 
   dbase_report_status({ msg: 'Starting...' });
 

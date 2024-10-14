@@ -7,7 +7,7 @@ function dbase_devices_update(deviceProps) {
     console.log('dbase_devices_update NO my.a_device_values', my.a_device_values);
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.roomName}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
   let { getRefPath, update } = fireb_.fbase;
   let refPath = getRefPath(path);
   // ui_log('dbase_update_props', path);

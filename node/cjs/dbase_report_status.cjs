@@ -45,11 +45,11 @@ function createStatusElement() {
 // globalThis.dbase_positionStatus = dbase_positionStatus;
 
 function qrcode_url() {
-  // let url = `https://molab-itp.github.io/p5moExamples/examples/let-america-rewind/qrcode/${my.group}/let-america-rewind.png`;
+  // let url = `https://molab-itp.github.io/p5moExamples/examples/let-america-rewind/qrcode/${my.mo_group}/let-america-rewind.png`;
   // https://molab-itp.github.io/moSalon/src/let-america-be/qrcode/s0/let-america-rewind.png
 
-  // let url = `https://molab-itp.github.io/p5moExamples/examples/let-america-rewind/qrcode/${my.group}/let-america-rewind.png`;
-  let url = `https://molab-itp.github.io/moSalon/src/let-america-be/qrcode/${my.group}.png`;
+  // let url = `https://molab-itp.github.io/p5moExamples/examples/let-america-rewind/qrcode/${my.mo_group}/let-america-rewind.png`;
+  let url = `https://molab-itp.github.io/moSalon/src/let-america-be/qrcode/${my.mo_group}.png`;
 
   console.log('qrcode_url', url);
   return url;
