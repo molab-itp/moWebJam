@@ -20,21 +20,23 @@ function dbase_update_props(props, options) {
     groupProps = props;
     deviceProps = {};
   }
-  //
-  // ui_log('dbase_update_props props', props, 'deviceProps', deviceProps);
+  // ui_log('dbase_update_props my.uid', my.uid);
   if (!my.uid) {
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}/${my.mo_room}`;
+  if (options.path && !group) {
+    path += '/' + options.path;
+  }
   let { getRefPath, update, increment } = fireb_.fbase;
   let refPath = getRefPath(path);
-
-  let a_group = options.a_group;
-  if (!a_group) a_group = 'a_group';
 
   let groups = options.group;
   if (!groups) groups = 's0';
   groups = groups.split(',');
+
+  // ui_log('dbase_update_props props', props, 'deviceProps', deviceProps);
+  // ui_log('dbase_update_props groups', groups);
 
   let updates = {};
 
@@ -57,12 +59,16 @@ function dbase_update_props(props, options) {
   for (let group of groups) {
     for (let prop in groupProps) {
       let value = groupProps[prop];
-      let dpath = `${a_group}/${group}/${prop}`;
+      if (options.path) {
+        prop = options.path + '/' + prop;
+      }
+      let dpath = `a_group/${group}/${prop}`;
       updates[dpath] = value;
     }
   }
   // ui_log('dbase_update_props updates', updates);
 
+  // refPath = [SITE-URL]/${my.dbase_rootPath}/${my.mo_app}/${my.mo_room}
   update(refPath, updates);
 
   dbase_site_event_update();
@@ -85,7 +91,7 @@ function dbase_update_value(value, apps) {
     ui_log(tag + ' no uid', my.uid);
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.mo_room}/${app}/${my.uid}${suffix}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}/${my.mo_room}/${my.uid}${suffix}`;
   let { getRefPath, update } = fireb_.fbase;
   let refPath = getRefPath(path);
 
@@ -104,7 +110,7 @@ globalThis.dbase_increment = dbase_increment;
 //
 function dbase_remove_room() {
   //
-  let path = `${my.dbase_rootPath}/${my.mo_room}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}/${my.mo_room}`;
   let { getRefPath, set } = fireb_.fbase;
   let refPath = getRefPath(path);
   set(refPath, {})
@@ -122,7 +128,7 @@ globalThis.dbase_remove_room = dbase_remove_room;
 //
 function dbase_remove_mo_app() {
   //
-  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}`;
   let { getRefPath, set } = fireb_.fbase;
   let refPath = getRefPath(path);
   set(refPath, {})

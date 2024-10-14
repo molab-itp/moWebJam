@@ -15,6 +15,7 @@ function dbase_site_event_visit() {
 globalThis.dbase_site_event_visit = dbase_site_event_visit;
 
 function dbase_site_event_update() {
+  // ui_log('dbase_site_event_update');
   dbase_site_event({ event: 'update', count: 'update_count' });
 }
 globalThis.dbase_site_event_update = dbase_site_event_update;
@@ -24,12 +25,14 @@ function dbase_site_event(keys) {
 }
 
 function dbase_site_updates(updates, keys) {
+  // ui_log('dbase_site_updates updates', updates, 'keys', keys);
+
   // console.log('dbase_site_event my.uid', my.uid);
   // ui_log('dbase_site_event my.uid', my.uid);
   if (!my.uid) {
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.mo_room}/device/${my.uid}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}/a_device/${my.uid}`;
   let { getRefPath, update, increment } = fireb_.fbase;
   let refPath = getRefPath(path);
   // ui_log('dbase_site_event', path);
@@ -40,11 +43,6 @@ function dbase_site_updates(updates, keys) {
   let userAgent = 'unknown';
   if (globalThis.navigator) {
     userAgent = globalThis.navigator.userAgent;
-  } else {
-    // updated needed to catch actions
-    // console.log('dbase_site_updates EXIT');
-    // !!@ to avoid filling up nodejs events
-    // return;
   }
 
   if (!updates) updates = {};

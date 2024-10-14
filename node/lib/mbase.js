@@ -1,20 +1,20 @@
 //
 
-import 'itp-molib';
-// import './lib/dbase/a_dbase.js';
+// import 'itp-molib';
+import './lib/dbase/a_dbase.js';
 
-// !!@ electron loader does not accept moLib which is copy from repo
-// !!@ best make moLib a npm package
-// !!@ Need to convert to import without http
 /*
-import {
-  initializeApp, //
-} from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+!!@ import 'itp-molib' fails to send to firebase backend
+./lib is a copy fo moLib and it works.
 */
 
 // console.log('globalThis', globalThis);
 
-export function dbase_init(my) {
+export function mbase_update_line(line) {
+  dbase_update_item({ line }, 'item');
+}
+
+export function mbase_init() {
   my.fireb_config = 'jht9629';
   // my.fireb_config = 'jht1493';
   // my.fireb_config = 'jhtitp';
@@ -42,12 +42,12 @@ export function dbase_init(my) {
 }
 
 async function setup_dbase() {
-  await dbase_app_init();
+  await dbase_app_init(my);
 
   console.log('setup_dbase dbase_app_init ');
   // console.log('app_init_completed my', my);
   //
-  dbase_app_observe({ observed_item });
+  dbase_app_observe({ observed_item }, 'item');
 
   console.log('setup_dbase dbase_app_observe');
 

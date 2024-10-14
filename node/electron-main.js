@@ -15,7 +15,7 @@ import { parse_argv } from './lib/parse_argv.js';
 import { setup_download } from './lib/setup_download.js';
 import { setup_restart } from './lib/setup_restart.js';
 
-import { dbase_init } from './lib/dbase.js';
+import { mbase_init, mbase_update_line } from './lib/mbase.js';
 
 let my = {};
 
@@ -38,9 +38,9 @@ console.log('opt', my.opt);
 
 app.whenReady().then(() => {
   ipcMain.on('set-line-info', (event, line) => {
+    //
     console.log('set-line-info line', line);
-    dbase_update_item({ line });
-    console.log('set-line-info post dbase_update_item');
+    mbase_update_line(line);
   });
 
   const screens = screen.getAllDisplays();
@@ -144,7 +144,7 @@ app.whenReady().then(() => {
   console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
 
   if (my.mo_group) {
-    dbase_init(my);
+    mbase_init();
 
     my.mainWindow.webContents.send('init-my', { mo_group: my.mo_group });
   }

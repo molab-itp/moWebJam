@@ -7,7 +7,7 @@ function dbase_devices_update(deviceProps) {
     console.log('dbase_devices_update NO my.a_device_values', my.a_device_values);
     return;
   }
-  let path = `${my.dbase_rootPath}/${my.mo_room}/${my.mo_app}`;
+  let path = `${my.dbase_rootPath}/${my.mo_app}/${my.mo_room}`;
   let { getRefPath, update } = fireb_.fbase;
   let refPath = getRefPath(path);
   // ui_log('dbase_update_props', path);
@@ -147,8 +147,22 @@ function dbase_devices_issue_actions(actions, options) {
 }
 globalThis.dbase_devices_issue_actions = dbase_devices_issue_actions;
 
+// 2024-moSalon/src/let-america-be/index.js
+//   dbase_issue_action('action_next');
+//
+// dbase_issue_action is complement by dbase_if_action
+//
+function dbase_issue_action(prop, path) {
+  console.log('dbase_issue_action', prop);
+  dbase_update_item({ [prop]: dbase_increment(1) }, path);
+}
+globalThis.dbase_issue_action = dbase_issue_action;
+
 //
 // simpler version of dbase_devices_issue_actions
+//
+// dbase_if_action(item.action_rewind, 'action_rewind', my.rewind_action)
+// use: node/lib/dbase.js | moSalon/vote
 //
 function dbase_if_action({ item, prop, actionFunc }) {
   let count = item[prop];
@@ -162,3 +176,5 @@ function dbase_if_action({ item, prop, actionFunc }) {
   }
 }
 globalThis.dbase_if_action = dbase_if_action;
+
+//
