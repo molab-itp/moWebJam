@@ -2,7 +2,7 @@
 const { webFrame } = require('electron');
 require('./setup_responder.cjs');
 require('./overlayElement.cjs');
-require('./dbase_report_status.cjs');
+require('./mbase_report_status.cjs');
 
 let my = {};
 window.my = my;
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let zoomFactor = webFrame.getZoomFactor();
   console.log('zoomFactor', zoomFactor);
 
-  dbase_report_status({ msg: 'Here!' });
+  mbase_report_status({ msg: 'Here!' });
 });
 
 window.addEventListener('mouseup', function (event) {

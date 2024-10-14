@@ -9,6 +9,10 @@ if (globalThis.window) {
 
 function dbase_report_status(props) {
   // ui_log('dbase_report_status props', props);
+  if (my.dbase_status_reporter) {
+    my.dbase_status_reporter(props);
+    return;
+  }
   if (!my.statusElement) {
     createStatusElement();
     if (!my.statusElement) return;

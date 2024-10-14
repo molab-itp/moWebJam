@@ -35,11 +35,11 @@ function setup_responder() {
     console.log('ipcRenderer.on full-read', value);
     play_from_top_long();
   });
-  ipcRenderer.on('dbase-status', (_event, msg) => {
+  ipcRenderer.on('dbase-status', (_event, props) => {
     // ipcRenderer.on('dbase_status_report', (_event, value) => {
     // console.log('ipcRenderer.on dbase_status_report msg', msg);
     // dbase_status_reporter
-    dbase_report_status({ msg });
+    mbase_report_status(props);
   });
 }
 // exports.modules.setup_responder = setup_responder;

@@ -1,6 +1,6 @@
 //
 
-function dbase_report_status(props) {
+function mbase_report_status(props) {
   if (!my.statusElement) {
     createStatusElement();
     if (!my.statusElement) return;
@@ -16,7 +16,7 @@ function dbase_report_status(props) {
   }
   my.statusElement.textContent = msg;
 }
-globalThis.dbase_report_status = dbase_report_status;
+globalThis.mbase_report_status = mbase_report_status;
 
 function createStatusElement() {
   if (!document) return;

@@ -119,9 +119,9 @@ app.whenReady().then(() => {
   //   my.mainWindow.webContents.send('rewind', 1);
   // }, 7 * 1000);
 
-  my.dbase_status_reporter = (msg) => {
-    // console.log('my.dbase_status_reporter msg', msg);
-    my.mainWindow.webContents.send('dbase-status', msg);
+  my.dbase_status_reporter = (props) => {
+    // console.log('my.dbase_status_reporter msg', props);
+    my.mainWindow.webContents.send('dbase-status', props);
     // my.mainWindow.webContents.send('dbase-status', 'hello');
     // console.log('my.dbase_status_reporter AFTER');
   };
