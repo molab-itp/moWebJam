@@ -74,3 +74,8 @@ function ui_error(...args) {
   // alert(...args);
 }
 globalThis.ui_error = ui_error;
+
+function ui_logv(...args) {
+  console.log(...args);
+}
+globalThis.ui_logv = ui_logv;
