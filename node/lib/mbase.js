@@ -14,7 +14,9 @@ export function mbase_update_line(line) {
   dbase_update_item({ line }, 'item');
 }
 
-export function mbase_init() {
+export async function mbase_init() {
+  console.log('mbase_init Enter ');
+
   my.fireb_config = 'jht9629';
   // my.fireb_config = 'jht1493';
   // my.fireb_config = 'jhtitp';
@@ -38,7 +40,9 @@ export function mbase_init() {
 
   console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
 
-  setup_dbase();
+  await setup_dbase();
+
+  console.log('mbase_init Exit ');
 }
 
 async function setup_dbase() {
