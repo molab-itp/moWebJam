@@ -1,9 +1,9 @@
 #!/bin/bash
+# start in outer directory
 cd ${0%/*}
+cd ..
 
 # clone moWebJam
-
-cd ..
 
 # moLib
 # check for destination moLib to ../moLib

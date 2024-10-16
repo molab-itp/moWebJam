@@ -1,7 +1,8 @@
 //
 
 // import 'itp-molib';
-import './lib/dbase/a_dbase.js';
+// import './lib/dbase/a_dbase.js';
+import './moLib/dbase/a_dbase.js';
 
 /*
 !!@ import 'itp-molib' fails to send to firebase backend
