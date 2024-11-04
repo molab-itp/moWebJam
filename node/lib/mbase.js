@@ -6,7 +6,7 @@ import './moLib/dbase/a_dbase.js';
 
 /*
 !!@ import 'itp-molib' fails to send to firebase backend
-./lib is a copy fo moLib and it works.
+./lib is a copy of moLib as a work around
 */
 
 // console.log('globalThis', globalThis);
@@ -36,10 +36,10 @@ export async function mbase_init() {
   my.nameDevice = 'america-electron';
 
   if (my.mo_group == 's0') {
-    my.mo_room = 'm0-america';
+    my.mo_room = 'm0-' + my.mo_room.substring(3);
   }
 
-  console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
+  console.log('mbase_init my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
 
   await setup_dbase();
 

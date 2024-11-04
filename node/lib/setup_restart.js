@@ -14,8 +14,8 @@ export function setup_restart(my) {
   if (per > 0) {
     setTimeout(function () {
       console.log('setTimeout app.relaunch ');
-      app.relaunch();
-      app.exit(0);
+      my.app.relaunch();
+      my.app.exit(0);
     }, per);
   }
 }
@@ -36,7 +36,7 @@ function parse_period(period_str) {
   }
   let secs = (arr[0] * 60 + arr[1]) * 60 + arr[2];
   // console.log('parse_period arr', arr);
-  // console.log('parse_period secs', secs);
+  console.log('parse_period secs', secs);
   return secs;
 }
 

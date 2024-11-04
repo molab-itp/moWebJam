@@ -21,6 +21,7 @@ let my = {};
 
 globalThis.my = my;
 
+my.app = app;
 my.root_index_path = '../src/index.html';
 my.download_path = path.resolve(process.env.HOME, 'Downloads');
 my.download_limit = -1;

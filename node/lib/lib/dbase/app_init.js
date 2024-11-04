@@ -14,7 +14,7 @@ async function dbase_app_init(my) {
   console.log('configLabel', config.configLabel);
   console.log('room', my.mo_room);
 
-  ui_logv('dbase_app_init globalThis', globalThis);
+  // ui_logv('dbase_app_init globalThis', globalThis);
   ui_logv('dbase_app_init my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
 
   dbase_report_status({ msg: 'Starting...' });
