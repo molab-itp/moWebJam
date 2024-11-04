@@ -13,5 +13,5 @@ URL="https://molab-itp.github.io/moSalon/src/vote-no-fascism?scroll=1"
 # --restart_period 6:0:0
 SCR="--screen 2"
 RS="--restart_period 8:0:0"
-npm run start -- $RS $SCR --root "$URL" --group s0 --room m0-no-facism --app mo-no-facism  --full 1 --portrait 1.0  --preload "."
+npm run start -- $RS $SCR --root "$URL" --group s1 --room m0-no-facism --app mo-no-facism  --full 1 --portrait 1.0  --preload "."
 
