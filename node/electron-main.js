@@ -38,11 +38,13 @@ parse_argv(my, process.argv);
 console.log('opt', my.opt);
 
 app.whenReady().then(() => {
-  ipcMain.on('set-line-info', (event, line) => {
-    //
-    console.log('set-line-info line', line);
-    mbase_update_line(line);
-  });
+  if (my.mo_app) {
+    ipcMain.on('set-line-info', (event, line) => {
+      //
+      console.log('set-line-info line', line);
+      mbase_update_line(line);
+    });
+  }
 
   const screens = screen.getAllDisplays();
   let index = my.opt.index || '1';
@@ -74,9 +76,12 @@ app.whenReady().then(() => {
   // console.log('my.zoom_level', my.zoom_level);
   let webPreferences = {
     nodeIntegration: true,
-    preload: path.join(__dirname, './cjs/preload-scroll.cjs'),
+    // preload: path.join(__dirname, './cjs/preload-scroll.cjs'),
     // zoomLevel: my.zoom_factor, // 1.8,
   };
+  if (my.mo_app) {
+    webPreferences.preload = path.join(__dirname, './cjs/preload-scroll.cjs');
+  }
   if (my.preload_arg != undefined) {
     webPreferences.preload = my.preload_arg;
   }
@@ -120,28 +125,29 @@ app.whenReady().then(() => {
   //   my.mainWindow.webContents.send('rewind', 1);
   // }, 7 * 1000);
 
-  my.dbase_status_reporter = (props) => {
-    // console.log('my.dbase_status_reporter msg', props);
-    my.mainWindow.webContents.send('dbase-status', props);
-    // my.mainWindow.webContents.send('dbase-status', 'hello');
-    // console.log('my.dbase_status_reporter AFTER');
-  };
-  my.rewind_action = () => {
-    my.mainWindow.webContents.send('rewind', 1);
-  };
-  my.full_read_action = () => {
-    my.mainWindow.webContents.send('full-read', 1);
-  };
-  my.next_action = () => {
-    my.mainWindow.webContents.send('next', 1);
-  };
-  my.previous_action = () => {
-    my.mainWindow.webContents.send('previous', 1);
-  };
-  my.continue_action = () => {
-    my.mainWindow.webContents.send('continue', 1);
-  };
-
+  if (my.mo_app) {
+    my.dbase_status_reporter = (props) => {
+      // console.log('my.dbase_status_reporter msg', props);
+      my.mainWindow.webContents.send('dbase-status', props);
+      // my.mainWindow.webContents.send('dbase-status', 'hello');
+      // console.log('my.dbase_status_reporter AFTER');
+    };
+    my.rewind_action = () => {
+      my.mainWindow.webContents.send('rewind', 1);
+    };
+    my.full_read_action = () => {
+      my.mainWindow.webContents.send('full-read', 1);
+    };
+    my.next_action = () => {
+      my.mainWindow.webContents.send('next', 1);
+    };
+    my.previous_action = () => {
+      my.mainWindow.webContents.send('previous', 1);
+    };
+    my.continue_action = () => {
+      my.mainWindow.webContents.send('continue', 1);
+    };
+  }
   console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
 
   if (my.mo_group) {
