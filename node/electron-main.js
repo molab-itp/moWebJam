@@ -38,14 +38,6 @@ parse_argv(my, process.argv);
 console.log('opt', my.opt);
 
 app.whenReady().then(() => {
-  if (my.mo_app) {
-    ipcMain.on('set-line-info', (event, line) => {
-      //
-      console.log('set-line-info line', line);
-      mbase_update_line(line);
-    });
-  }
-
   const screens = screen.getAllDisplays();
   let index = my.opt.index || '1';
   index = parseFloat(index) - 1;
@@ -104,12 +96,7 @@ app.whenReady().then(() => {
   // opt.d = opt.d || '';
   // opt.h = opt.h || '';
   // const url_options = { query: { u: opt.u, s: opt.s, d: opt.d, h: opt.h } };
-  const url_options = { query: my.opt };
-  if (my.root_index_path.startsWith('http')) {
-    my.mainWindow.loadURL(my.root_index_path);
-  } else {
-    my.mainWindow.loadFile(my.root_index_path, url_options);
-  }
+  load_root_index(my);
 
   // mainWindow.fullScreen = opt.fullScreen;
   setTimeout(function () {
@@ -118,14 +105,28 @@ app.whenReady().then(() => {
 
   setup_download(my);
 
-  setup_restart(my);
+  setup_restart(my, load_root_index);
 
-  // Send ipc event to preload
-  // setInterval(function () {
-  //   my.mainWindow.webContents.send('rewind', 1);
-  // }, 7 * 1000);
+  setup_mo_app(my);
+  //
+});
 
+function load_root_index(my) {
+  const url_options = { query: my.opt };
+  if (my.root_index_path.startsWith('http')) {
+    my.mainWindow.loadURL(my.root_index_path);
+  } else {
+    my.mainWindow.loadFile(my.root_index_path, url_options);
+  }
+}
+
+function setup_mo_app(my) {
   if (my.mo_app) {
+    ipcMain.on('set-line-info', (event, line) => {
+      //
+      console.log('set-line-info line', line);
+      mbase_update_line(line);
+    });
     my.dbase_status_reporter = (props) => {
       // console.log('my.dbase_status_reporter msg', props);
       my.mainWindow.webContents.send('dbase-status', props);
@@ -149,13 +150,11 @@ app.whenReady().then(() => {
     };
   }
   console.log('my.mo_app', my.mo_app, 'my.mo_room', my.mo_room, 'my.mo_group', my.mo_group);
-
   if (my.mo_group) {
     mbase_init();
-
     my.mainWindow.webContents.send('init-my', { mo_group: my.mo_group });
   }
-});
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

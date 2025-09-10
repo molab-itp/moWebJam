@@ -1,25 +1,30 @@
 //
 
 // --restart_period n
-export function setup_restart(my) {
+export function setup_restart(my, load_root_index) {
   let per = 0;
   if (my.opt.restart_period) {
     per = parse_period(my.opt.restart_period);
   } else if (my.opt.restart_time) {
     per = parse_restart_time(my.opt.restart_time);
   }
-  // console.log('setup_restart per=' + per);
+  console.log('setup_restart per=' + per);
   // Seconds to milliseconds
   per = per * 1000;
   if (per > 0) {
     setTimeout(function () {
-      console.log('setTimeout app.relaunch ');
-      my.app.relaunch();
-      my.app.exit(0);
+      console.log('setTimeout load_root_index  setup_restart');
+      load_root_index(my);
+      setup_restart(my, load_root_index);
+      // console.log('setTimeout app.relaunch ');
+      // my.app.relaunch();
+      // my.app.exit(0);
     }, per);
   }
 }
 
+// convert hours:minutes:seconds string into number of seconds
+//
 function parse_period(period_str) {
   // hh:mm:ss
   // mm:ss
@@ -40,6 +45,8 @@ function parse_period(period_str) {
   return secs;
 }
 
+// convert hours:minutes:seconds into lapse seconds from now
+//
 function parse_restart_time(restart_time) {
   // hh:mm:ss
   // let arr = restart_time.split(':').map(parseFloat);
