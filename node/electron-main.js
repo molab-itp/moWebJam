@@ -17,7 +17,8 @@ import { parse_argv } from './lib/parse_argv.js';
 import { setup_download } from './lib/setup_download.js';
 import { setup_restart } from './lib/setup_restart.js';
 
-import { mbase_init, mbase_update_line } from './lib/mbase.js';
+// Disabled 2026-03
+// import { mbase_init, mbase_update_line } from './lib/mbase.js';
 
 let my = {};
 
@@ -80,8 +81,8 @@ app.whenReady().then(() => {
   }
   if (my.preload_arg != undefined) {
     webPreferences.preload = my.preload_arg;
+    console.log('my.preload_arg |' + my.preload_arg + '|');
   }
-  console.log('my.preload_arg |' + my.preload_arg + '|');
 
   my.mainWindow = new BrowserWindow({
     x,
