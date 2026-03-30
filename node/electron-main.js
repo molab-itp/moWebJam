@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('__dirname', __dirname);
-console.log('process.env.HOME', process.env.HOME);
+// console.log('process.env.HOME', process.env.HOME);
 
 import { parse_argv } from './lib/parse_argv.js';
 import { setup_download } from './lib/setup_download.js';
@@ -119,14 +119,21 @@ app.whenReady().then(() => {
 
 function load_root_index(my) {
   // Load playlist from JSON file if specified and not yet loaded
-  if (my.playlist_path && !my.playlist) {
-    try {
-      const data = fs.readFileSync(my.playlist_path, 'utf8');
-      my.playlist = JSON.parse(data);
-      my.playlist_index = 0;
-      console.log('Loaded playlist with', my.playlist.length, 'URLs');
-    } catch (err) {
-      console.error('Failed to load playlist:', err.message);
+  if (my.playlist_path) {
+    if (!my.playlist) {
+      try {
+        const playpath = path.join(__dirname, my.playlist_path);
+        const data = fs.readFileSync(playpath, 'utf8');
+        my.playlist = JSON.parse(data);
+        my.playlist_index = 0;
+        console.log('Loaded playlist with', my.playlist.length, 'URLs');
+      } catch (err) {
+        console.error('Failed to load playlist:', err.message);
+      }
+    } else {
+      // Advance to next in the play list
+      my.playlist_index = (my.playlist_index + 1) % my.playlist.length;
+      console.log('Advance playlist_index', my.playlist_index);
     }
   }
 

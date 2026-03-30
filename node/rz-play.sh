@@ -13,6 +13,6 @@ URL="https://woke-mind.github.io/woke-words/words/?v=63"
 
 PERIOD=12:00:0
 # PERIOD=2:30:0
-PERIOD=1:0
+PERIOD=0:10
 npm run start -- --restart_period $PERIOD --full 0 --portrait 0.90 --screen 1 --playlist playlist.json
 

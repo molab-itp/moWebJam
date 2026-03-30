@@ -102,7 +102,7 @@ export function parse_argv(my, argv) {
       case '--playlist':
         my.playlist_path = argv[++index];
         my.playlist_path = decodeURIComponent(my.playlist_path);
-        my.playlist_path = path.resolve(process.env.HOME, my.playlist_path);
+        // my.playlist_path = path.resolve(process.env.HOME, my.playlist_path);
         console.log('playlist_path:', my.playlist_path);
         break;
       default:
