@@ -99,6 +99,12 @@ export function parse_argv(my, argv) {
         my.download_limit = parseFloat(argv[++index]);
         console.log('download_limit', my.download_limit);
         break;
+      case '--playlist':
+        my.playlist_path = argv[++index];
+        my.playlist_path = decodeURIComponent(my.playlist_path);
+        my.playlist_path = path.resolve(process.env.HOME, my.playlist_path);
+        console.log('playlist_path:', my.playlist_path);
+        break;
       default:
         console.log('Unknown arg val', val);
         break;

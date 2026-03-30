@@ -11,6 +11,13 @@
 ## notes
 
 ```
+# --
+2026-03-29 22:39:45
+
+json play list
+--playlist
+
+# --
 after restart need to kill main process
 
 ./run-vote.sh

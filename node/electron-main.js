@@ -3,6 +3,7 @@
 
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 // Needed for __dirname with ESM
@@ -10,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('__dirname', __dirname);
+console.log('process.env.HOME', process.env.HOME);
 
 import { parse_argv } from './lib/parse_argv.js';
 import { setup_download } from './lib/setup_download.js';
@@ -26,6 +28,8 @@ my.root_index_path = '../src/index.html';
 my.download_path = path.resolve(process.env.HOME, 'Downloads');
 my.download_limit = -1;
 my.opt = { h: 1 };
+my.playlist = null;
+my.playlist_index = 0;
 // my.width_trim;
 // my.mainWindow;
 
@@ -108,15 +112,56 @@ app.whenReady().then(() => {
   setup_restart(my, load_root_index);
 
   setup_mo_app(my);
+
+  setup_playlist_ipc(my);
   //
 });
 
 function load_root_index(my) {
+  // Load playlist from JSON file if specified and not yet loaded
+  if (my.playlist_path && !my.playlist) {
+    try {
+      const data = fs.readFileSync(my.playlist_path, 'utf8');
+      my.playlist = JSON.parse(data);
+      my.playlist_index = 0;
+      console.log('Loaded playlist with', my.playlist.length, 'URLs');
+    } catch (err) {
+      console.error('Failed to load playlist:', err.message);
+    }
+  }
+
+  // Determine URL to load
+  let url_to_load = my.root_index_path;
+  if (my.playlist && my.playlist.length > 0) {
+    url_to_load = my.playlist[my.playlist_index];
+    console.log('Loading playlist item', my.playlist_index + 1, 'of', my.playlist.length, ':', url_to_load);
+  }
+
   const url_options = { query: my.opt };
-  if (my.root_index_path.startsWith('http')) {
-    my.mainWindow.loadURL(my.root_index_path);
+  if (url_to_load.startsWith('http')) {
+    my.mainWindow.loadURL(url_to_load);
   } else {
-    my.mainWindow.loadFile(my.root_index_path, url_options);
+    my.mainWindow.loadFile(url_to_load, url_options);
+  }
+}
+
+function load_playlist_next(my) {
+  if (!my.playlist || my.playlist.length === 0) return;
+  my.playlist_index = (my.playlist_index + 1) % my.playlist.length;
+  load_root_index(my);
+}
+
+function load_playlist_prev(my) {
+  if (!my.playlist || my.playlist.length === 0) return;
+  my.playlist_index = (my.playlist_index - 1 + my.playlist.length) % my.playlist.length;
+  load_root_index(my);
+}
+
+function load_playlist_index(my, index) {
+  if (!my.playlist || my.playlist.length === 0) return;
+  if (index >= 0 && index < my.playlist.length) {
+    my.playlist_index = index;
+    load_root_index(my);
   }
 }
 
@@ -154,6 +199,18 @@ function setup_mo_app(my) {
     mbase_init();
     my.mainWindow.webContents.send('init-my', { mo_group: my.mo_group });
   }
+}
+
+function setup_playlist_ipc(my) {
+  ipcMain.on('playlist-next', () => {
+    load_playlist_next(my);
+  });
+  ipcMain.on('playlist-prev', () => {
+    load_playlist_prev(my);
+  });
+  ipcMain.on('playlist-goto', (event, index) => {
+    load_playlist_index(my, index);
+  });
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
