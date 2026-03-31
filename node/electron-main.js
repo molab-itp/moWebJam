@@ -118,6 +118,12 @@ app.whenReady().then(() => {
   //
 });
 
+function timeNow() {
+  const now = new Date();
+  return now.toISOString() + ' ' + now.toDateString() + ' ' + now.toLocaleTimeString();
+  // return now.toDateString() + ' ' + now.toLocaleTimeString();
+}
+
 function load_root_index(my) {
   // Load playlist from JSON file if specified and not yet loaded
   if (my.playlist_path) {
@@ -127,14 +133,14 @@ function load_root_index(my) {
         const data = fs.readFileSync(playpath, 'utf8');
         my.playlist = JSON.parse(data);
         my.playlist_index = 0;
-        console.log('Loaded playlist with', my.playlist.length, 'URLs');
+        console.log('Loaded playlist with', my.playlist.length, 'URLs', timeNow());
       } catch (err) {
         console.error('Failed to load playlist:', err.message);
       }
     } else {
       // Advance to next in the play list
       my.playlist_index = (my.playlist_index + 1) % my.playlist.length;
-      console.log('Advance playlist_index', my.playlist_index);
+      console.log('Advance playlist_index', my.playlist_index, timeNow());
     }
   }
 
