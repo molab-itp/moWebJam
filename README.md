@@ -1,8 +1,13 @@
 # [moWebJam](https://github.com/molab-itp/moWebJam)
 
-- reload web pages that fail after running for long period
+- show a playlist of websites in browser
+- controls for fullscreen and testing
+- node/ru-play.sh
+
 - remix of public web sites with electron for big screen installations
 - and remote control via mobile devices using qrcode
+
+- reload web pages that fail after running for long period
 
 ## let america be
 
