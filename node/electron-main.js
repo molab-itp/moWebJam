@@ -244,17 +244,17 @@ function inject_countdown(my) {
     el = document.createElement('div');
     el.id = '__mo_countdown';
     el.style.cssText = [
-      'position:fixed', 'left:50%', 'bottom:12px', 'transform:translateX(-50%)',
+      'position:fixed', 'left:50%', 'bottom:0px', 'transform:translateX(-50%)',
       'z-index:2147483647', 'pointer-events:none',
-      'padding:4px 12px', 'border-radius:8px',
+      'padding:4px 0px', 'border-radius:4px',
       'background:rgba(0,0,0,0.55)', 'color:#fff',
-      'font:bold 24px/1.2 ui-monospace,Menlo,monospace',
+      'font:10px/1.2 ui-monospace,Menlo,monospace',
     ].join(';');
     (document.body || document.documentElement).appendChild(el);
   }
   function tick() {
     let r = Math.max(0, (end - Date.now()) / 1000);
-    el.textContent = r < 60 ? r.toFixed(1) + 's' : (r / 60).toFixed(1) + 'm';
+    el.textContent = r < 60 ? r.toFixed(1) + 's' : (r / 60).toFixed(2) + 'm';
     if (r <= 0) clearInterval(window.__mo_countdown_iv);
   }
   tick();
