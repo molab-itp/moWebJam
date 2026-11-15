@@ -17,5 +17,5 @@ URL="https://woke-mind.github.io/woke-words/words/?v=63"
 # PERIOD=0:10
 # npm run start -- --restart_period $PERIOD --full 0 --portrait 0.90 --screen 1 --playlist ru-play.json
 
-npm run start -- --speed 10 --full 0 --portrait 0.90 --screen 1 --playlist ru-play.json
+npm run start -- --speed 12 --full 0 --portrait 0.90 --screen 1 --playlist ru-play.json
 
