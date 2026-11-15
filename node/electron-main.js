@@ -33,6 +33,7 @@ my.playlist = null; // array of urls
 my.playlist_times = []; // array of "hh:mm:ss" periods, cycled per url
 my.playlist_index = 0;
 my.playlist_timer = null;
+my.playlist_end_time = 0; // epoch ms when current playlist item advances (0 = none)
 my.speed = 1; // --speed n divides all time periods by n
 // my.width_trim;
 // my.mainWindow;
@@ -112,6 +113,8 @@ app.whenReady().then(() => {
   }, 5 * 1000);
 
   setup_download(my);
+
+  setup_countdown_overlay(my);
 
   if (my.playlist_times.length > 0) {
     // playlist "times" drive the timer; restart_period is not used
@@ -211,13 +214,55 @@ function load_root_index(my) {
 function schedule_playlist_timer(my) {
   clearTimeout(my.playlist_timer);
   my.playlist_timer = null;
+  my.playlist_end_time = 0;
   const times = my.playlist_times;
   if (!my.playlist || my.playlist.length === 0 || !times || times.length === 0) return;
   const period = times[my.playlist_index % times.length];
   const secs = parse_period(period) / my.speed;
   console.log('playlist timer', period, 'speed', my.speed, 'secs', secs);
   if (!(secs > 0)) return;
+  my.playlist_end_time = Date.now() + secs * 1000;
   my.playlist_timer = setTimeout(() => playlist_advance(my), secs * 1000);
+}
+
+// Overlay a count down timer at bottom middle of the page.
+// Shows 0.1s resolution when under 60 seconds, else 0.1m (fraction of minutes).
+// Injected after every page load; the page ticks it locally against end time.
+function setup_countdown_overlay(my) {
+  my.mainWindow.webContents.on('did-finish-load', () => {
+    inject_countdown(my);
+  });
+}
+
+function inject_countdown(my) {
+  const end = my.playlist_end_time || 0;
+  const js = `(function (end) {
+  clearInterval(window.__mo_countdown_iv);
+  let el = document.getElementById('__mo_countdown');
+  if (!end) { if (el) el.remove(); return; }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = '__mo_countdown';
+    el.style.cssText = [
+      'position:fixed', 'left:50%', 'bottom:12px', 'transform:translateX(-50%)',
+      'z-index:2147483647', 'pointer-events:none',
+      'padding:4px 12px', 'border-radius:8px',
+      'background:rgba(0,0,0,0.55)', 'color:#fff',
+      'font:bold 24px/1.2 ui-monospace,Menlo,monospace',
+    ].join(';');
+    (document.body || document.documentElement).appendChild(el);
+  }
+  function tick() {
+    let r = Math.max(0, (end - Date.now()) / 1000);
+    el.textContent = r < 60 ? r.toFixed(1) + 's' : (r / 60).toFixed(1) + 'm';
+    if (r <= 0) clearInterval(window.__mo_countdown_iv);
+  }
+  tick();
+  window.__mo_countdown_iv = setInterval(tick, 100);
+})(${end});`;
+  my.mainWindow.webContents.executeJavaScript(js).catch((err) => {
+    console.error('countdown inject failed:', err.message);
+  });
 }
 
 function playlist_advance(my) {

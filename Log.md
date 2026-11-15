@@ -153,3 +153,30 @@ I updated `load_playlist` in [electron-main.js](node/electron-main.js) so it rea
 **Checks:** the script passes `node --check`. I also ran the same parsing logic on your current `ru-play.json`. It gave 8 URLs, each matched with the right time (7:00, 0:20, 3:00, …), in a format the existing `parse_period` reads. I haven't launched the Electron app itself.
 
 *Time: 20s · Cost: $0.2437 (input 8, output 2.0k, cache write 21.3k, cache read 163.9k) · session $0.2437*
+
+---
+
+## User (11/15/2026, 2:47:49 PM)
+
+```
+update node/electon-main.js
+to overlay a count down timer
+on bottom middle of screen 
+in fraction of seconds 0.1s,
+if timer less than 60 seconds,
+or fraction of minutes 0.1m
+```
+
+## Assistant
+
+I added a countdown overlay to [electron-main.js](node/electron-main.js). It sits at the bottom middle of the window and shows the time left before the playlist moves to the next URL: `42.3s` when under 60 seconds, otherwise minutes like `6.8m`. The file passes a syntax check, but I haven't run the app, so I haven't seen the overlay on a real page yet.
+
+- **When the timer is set:** the playlist scheduler [electron-main.js:224](node/electron-main.js#L224) now also records the time the current item will end.
+- **How it gets onto the page:** after each page finishes loading, the app injects a small script ([electron-main.js:231-266](node/electron-main.js#L231-L266)). The script adds a dark, semi-transparent label on top of everything. Clicks pass through it to the page. The page updates the label itself every 0.1 seconds.
+- **`--speed`:** the countdown shows the real time left after the speed setting is applied.
+- **No timer:** if the playlist has no time values (manual or legacy `restart_period` mode), no overlay appears.
+- **Small glitch:** right at the switch from minutes to seconds it can briefly show `60.0s`.
+
+There's no command-line option to turn the overlay off; say if you want one.
+
+*Time: 25s · Cost: $0.2401 (input 6, output 2.5k, cache write 20.8k, cache read 114.9k) · session $0.2401*

@@ -45,6 +45,7 @@ to use new playlist json format:
 ]
 
 v0.4
+
 update node script node/electon-main.js
 to use new playlist json format:
 [
@@ -55,3 +56,12 @@ to use new playlist json format:
     ...
 ]
 ie. url is followed by time period value in "HH:MM:SS" format
+
+v0.5
+
+update node/electon-main.js
+to overlay a count down timer
+on bottom middle of screen 
+in fraction of seconds 0.1s,
+if timer less than 60 seconds,
+or fraction of minutes 0.1m
