@@ -31,3 +31,15 @@ npm run start --
 --restart_period $PERIOD --full 0 --portrait 0.90 --screen 1 
 --playlist ru-play.json
 --speed 2 
+
+v0.3
+
+update node script node/electon-main.js
+to use new playlist json format:
+[
+  {
+    "url": "https://jht9629-nyu.github.io/let-america-be/src/poem/poem/let-america-be-america-again.html?group=s1",
+    "time": "7:00"
+  },
+...
+]

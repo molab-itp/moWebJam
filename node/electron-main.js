@@ -135,17 +135,22 @@ function timeNow() {
   // return now.toDateString() + ' ' + now.toLocaleTimeString();
 }
 
-// Load playlist JSON. Accepts either
-//   { "times": ["0:10", "05:00"], "urls": [ ... ] }
-// or legacy plain array of urls.
+// Load playlist JSON. Accepts
+//   [ { "url": "https://...", "time": "7:00" }, ... ]   (time per url)
+// or legacy
+//   { "times": ["0:10", "05:00"], "urls": [ ... ] }      (times cycled)
+//   [ "https://...", ... ]                               (plain urls)
 function load_playlist(my) {
   if (!my.playlist_path || my.playlist) return;
   try {
     const playpath = path.join(__dirname, my.playlist_path);
     const data = JSON.parse(fs.readFileSync(playpath, 'utf8'));
     if (Array.isArray(data)) {
-      my.playlist = data;
-      my.playlist_times = [];
+      // Items may be { url, time } objects or plain url strings
+      my.playlist = data.map((item) => (typeof item === 'string' ? item : item.url));
+      my.playlist_times = data.map((item) => (typeof item === 'string' ? '' : item.time || ''));
+      // No times at all: leave empty so restart_period / manual control applies
+      if (!my.playlist_times.some((t) => t)) my.playlist_times = [];
     } else {
       my.playlist = data.urls || [];
       my.playlist_times = data.times || [];

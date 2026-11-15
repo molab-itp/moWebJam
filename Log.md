@@ -94,3 +94,29 @@ npm run start -- --full 1 --screen 1 --playlist ru-play.json --speed 2
 The JSON in your prompt has a trailing comma after the last URL, which `JSON.parse` rejects. The actual `ru-play.json` doesn't have one, so it's fine.
 
 *Time: 44s · Cost: $0.3428 (input 14, output 4.8k, cache write 22.8k, cache read 319.3k) · session $0.3428*
+
+---
+
+## User (11/15/2026, 12:26:30 AM)
+
+```
+update node script node/electon-main.js
+to use new playlist json format:
+[
+  {
+    "url": "https://jht9629-nyu.github.io/let-america-be/src/poem/poem/let-america-be-america-again.html?group=s1",
+    "time": "7:00"
+  },
+...
+]
+```
+
+## Assistant
+
+I've updated `load_playlist()` in [electron-main.js](node/electron-main.js) so it reads the new `[{ "url", "time" }, ...]` format. I haven't launched Electron with a playlist yet. What I did check: the file parses, and the new loading code reads [ru-play.json](node/ru-play.json) as 8 URLs with times `7:00, 0:20, 3:00, …`. A plain list of URLs like `ru-play-test.json` loads with no times.
+
+- **How it works:** each entry's URL and time are paired by position, so item N plays for its own `time`. Previous/next/goto and `--speed` work as before.
+- **Older files still load:** a plain array of URL strings, or the `{ times, urls }` object, still works. Plain arrays can also mix strings and `{url, time}` objects.
+- **Missing times:** if no entry has a `time`, the old `restart_period` setting takes over. If only some entries lack a `time`, the playlist stops on those entries until you move on with next/prev.
+
+*Time: 24s · Cost: $0.2659 (input 12, output 2.2k, cache write 21.4k, cache read 257.8k) · session $0.2659*
