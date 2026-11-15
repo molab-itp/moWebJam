@@ -1,0 +1,7 @@
+_prompts.txt
+
+v0.1
+
+update nodejs app in node to latest version
+to fix npm install warnings:
+16 vulnerabilities (10 moderate, 4 high, 2 critical)
