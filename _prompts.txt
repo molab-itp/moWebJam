@@ -43,3 +43,15 @@ to use new playlist json format:
   },
 ...
 ]
+
+v0.4
+update node script node/electon-main.js
+to use new playlist json format:
+[
+  "https://jht9629-nyu.github.io/let-america-be/src/poem/poem/let-america-be-america-again.html?group=s1",
+  "7:00",
+  "https://jht9629-nyu.github.io/ims-2026-jht/ims02/shader-trail/index.html",
+  "0:20",
+    ...
+]
+ie. url is followed by time period value in "HH:MM:SS" format

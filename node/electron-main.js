@@ -135,9 +135,15 @@ function timeNow() {
   // return now.toDateString() + ' ' + now.toLocaleTimeString();
 }
 
+// "HH:MM:SS", "MM:SS" or "SS"
+function is_time_period(str) {
+  return /^\d+(:\d+){0,2}$/.test(str.trim());
+}
+
 // Load playlist JSON. Accepts
-//   [ { "url": "https://...", "time": "7:00" }, ... ]   (time per url)
+//   [ "https://...", "7:00", "https://...", "0:20", ... ] (url followed by time)
 // or legacy
+//   [ { "url": "https://...", "time": "7:00" }, ... ]   (time per url)
 //   { "times": ["0:10", "05:00"], "urls": [ ... ] }      (times cycled)
 //   [ "https://...", ... ]                               (plain urls)
 function load_playlist(my) {
@@ -146,9 +152,27 @@ function load_playlist(my) {
     const playpath = path.join(__dirname, my.playlist_path);
     const data = JSON.parse(fs.readFileSync(playpath, 'utf8'));
     if (Array.isArray(data)) {
-      // Items may be { url, time } objects or plain url strings
-      my.playlist = data.map((item) => (typeof item === 'string' ? item : item.url));
-      my.playlist_times = data.map((item) => (typeof item === 'string' ? '' : item.time || ''));
+      // Items may be url strings (optionally followed by a time string)
+      // or { url, time } objects
+      my.playlist = [];
+      my.playlist_times = [];
+      for (const item of data) {
+        if (typeof item === 'string') {
+          if (is_time_period(item)) {
+            if (my.playlist.length > 0) {
+              my.playlist_times[my.playlist.length - 1] = item.trim();
+            } else {
+              console.warn('Playlist time', item, 'has no preceding url, ignored');
+            }
+          } else {
+            my.playlist.push(item);
+            my.playlist_times.push('');
+          }
+        } else if (item && item.url) {
+          my.playlist.push(item.url);
+          my.playlist_times.push(item.time || '');
+        }
+      }
       // No times at all: leave empty so restart_period / manual control applies
       if (!my.playlist_times.some((t) => t)) my.playlist_times = [];
     } else {

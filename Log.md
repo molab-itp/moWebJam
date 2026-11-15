@@ -120,3 +120,36 @@ I've updated `load_playlist()` in [electron-main.js](node/electron-main.js) so i
 - **Missing times:** if no entry has a `time`, the old `restart_period` setting takes over. If only some entries lack a `time`, the playlist stops on those entries until you move on with next/prev.
 
 *Time: 24s · Cost: $0.2659 (input 12, output 2.2k, cache write 21.4k, cache read 257.8k) · session $0.2659*
+
+---
+
+## User (11/15/2026, 12:05:52 PM)
+
+```
+update node script node/electon-main.js
+to use new playlist json format:
+[
+  "https://jht9629-nyu.github.io/let-america-be/src/poem/poem/let-america-be-america-again.html?group=s1",
+  "7:00",
+  "https://jht9629-nyu.github.io/ims-2026-jht/ims02/shader-trail/index.html",
+  "0:20",
+    ...
+]
+ie. url is followed by time period value in "HH:MM:SS" format
+```
+
+## Assistant
+
+Quick check that the parser handles the new ru-play.json and that `parse_period` accepts "7:00":
+
+I updated `load_playlist` in [electron-main.js](node/electron-main.js) so it reads the new flat format, where each URL is followed by its time. It still reads the older formats.
+
+**How a playlist is read now:**
+- **A time string** (`"HH:MM:SS"`, `"MM:SS"` or `"SS"`) sets the play time for the URL just before it. If a time appears before any URL, it's skipped and a warning is logged.
+- **Any other string** is treated as a URL. A URL with no time after it gets no timer.
+- **Older formats** still work: the `{url, time}` objects, the `{urls, times}` object, and a plain list of URLs.
+- **If no URL has a time**, the script falls back to `restart_period` (or you move through the list by hand), as before.
+
+**Checks:** the script passes `node --check`. I also ran the same parsing logic on your current `ru-play.json`. It gave 8 URLs, each matched with the right time (7:00, 0:20, 3:00, …), in a format the existing `parse_period` reads. I haven't launched the Electron app itself.
+
+*Time: 20s · Cost: $0.2437 (input 8, output 2.0k, cache write 21.3k, cache read 163.9k) · session $0.2437*
