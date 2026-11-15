@@ -43,3 +43,54 @@ I upgraded the dependencies in `node/` and `npm audit` now reports **0 vulnerabi
 I haven't committed anything. The only files changed are `node/package.json` and `node/package-lock.json`.
 
 *Time: 1m 15s · Cost: $0.3610 (input 24, output 3.3k, cache write 23.4k, cache read 542.3k) · session $0.3610*
+
+---
+
+## User (11/14/2026, 9:38:36 PM)
+
+```
+update node script node/electon-main.js
+to use new playlist json format:
+{
+  "times": ["0:10", "05:00"],
+  "urls": [
+    "https://woke-mind.github.io/woke-words/words/",
+    "https://jht9629-nyu.github.io/ims-2026-jht/ims02/shader-trail/index.html",
+    "https://jht9629-nyu.github.io/blackfacts/src/index.html?v=63&group=s1",
+    "https://jht9629-nyu.github.io/ims-2026-jht/ims03/Marching-Ripples/index.html",
+  ]
+}
+use "times" property  as timer period 
+for each entry in "urls" 
+cycling between entries in "times"
+use the same format as restart_period, "HH:MM:SS" hours:minutes:seconds
+add --speed argv parameter that will scale the time period 
+by division, eg. --speed 2 will half all times periods
+```
+
+## Assistant
+
+Old array-format playlists exist too, so I'll keep supporting them. Now the edits:
+
+Now the main script: split playlist loading from URL loading, and schedule a per-entry timer.
+
+Quick check of the time parsing with speed:
+
+[electron-main.js](node/electron-main.js) now reads the new playlist format. Each entry in `urls` stays on screen for `times[i % times.length]`, so with `["0:10", "05:00"]` the entries alternate between 10 seconds and 5 minutes. `--speed n` divides every period. I only checked syntax and the time parsing (`0:10` → 10s, `05:00` → 300s, both halved with speed 2). I haven't launched Electron to watch it cycle.
+
+**Example:**
+```
+npm run start -- --full 1 --screen 1 --playlist ru-play.json --speed 2
+```
+
+**What changed:**
+- **Playlist loading** ([electron-main.js](node/electron-main.js)): a new `load_playlist()` reads the file. It accepts `{times, urls}` and also the old plain array, so `ru-play-1.json` and the other older files still work.
+- **Timer:** after each URL loads, `schedule_playlist_timer()` sets a single timer for the next one, clearing any earlier timer first. So the next/prev/goto IPC messages restart the countdown for the new entry instead of piling up timers.
+- **`restart_period`:** if the playlist has `times`, `--restart_period` is ignored and a log line says so. Your `ru-play.sh` still passes `--restart_period 05:00`, which now has no effect with `ru-play.json`. If there are no `times` (old array format), `--restart_period` still advances the playlist, and `--speed` scales it too. `--restart_time` is a time of day, so speed doesn't change it.
+- **Next/prev fix:** the old `load_root_index` moved to the next entry every time it ran, so the next/prev IPC handlers moved two steps. Now `load_root_index` only loads the current entry, and moving forward or back happens in one place.
+- **`--speed`** ([parse_argv.js](node/lib/parse_argv.js)): a value that is missing or ≤0 falls back to 1. It's stored as `my.speed`, not in `my.opt`, so it isn't added to the query string of local pages.
+- **[setup_restart.js](node/lib/setup_restart.js):** `parse_period` is now exported so the main script can use it.
+
+The JSON in your prompt has a trailing comma after the last URL, which `JSON.parse` rejects. The actual `ru-play.json` doesn't have one, so it's fine.
+
+*Time: 44s · Cost: $0.3428 (input 14, output 4.8k, cache write 22.8k, cache read 319.3k) · session $0.3428*

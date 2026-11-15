@@ -15,7 +15,7 @@ console.log('__dirname', __dirname);
 
 import { parse_argv } from './lib/parse_argv.js';
 import { setup_download } from './lib/setup_download.js';
-import { setup_restart } from './lib/setup_restart.js';
+import { setup_restart, parse_period } from './lib/setup_restart.js';
 
 // Disabled 2026-03
 // import { mbase_init, mbase_update_line } from './lib/mbase.js';
@@ -29,8 +29,11 @@ my.root_index_path = '../src/index.html';
 my.download_path = path.resolve(process.env.HOME, 'Downloads');
 my.download_limit = -1;
 my.opt = { h: 1 };
-my.playlist = null;
+my.playlist = null; // array of urls
+my.playlist_times = []; // array of "hh:mm:ss" periods, cycled per url
 my.playlist_index = 0;
+my.playlist_timer = null;
+my.speed = 1; // --speed n divides all time periods by n
 // my.width_trim;
 // my.mainWindow;
 
@@ -110,7 +113,15 @@ app.whenReady().then(() => {
 
   setup_download(my);
 
-  setup_restart(my, load_root_index);
+  if (my.playlist_times.length > 0) {
+    // playlist "times" drive the timer; restart_period is not used
+    if (my.opt.restart_period) {
+      console.log('playlist times override restart_period', my.opt.restart_period);
+    }
+  } else {
+    // Legacy: restart_period advances the playlist (or reloads root)
+    setup_restart(my, my.playlist ? playlist_advance : load_root_index);
+  }
 
   setup_mo_app(my);
 
@@ -124,31 +135,37 @@ function timeNow() {
   // return now.toDateString() + ' ' + now.toLocaleTimeString();
 }
 
-function load_root_index(my) {
-  // Load playlist from JSON file if specified and not yet loaded
-  if (my.playlist_path) {
-    if (!my.playlist) {
-      try {
-        const playpath = path.join(__dirname, my.playlist_path);
-        const data = fs.readFileSync(playpath, 'utf8');
-        my.playlist = JSON.parse(data);
-        my.playlist_index = 0;
-        console.log('Loaded playlist with', my.playlist.length, 'URLs', timeNow());
-      } catch (err) {
-        console.error('Failed to load playlist:', err.message);
-      }
+// Load playlist JSON. Accepts either
+//   { "times": ["0:10", "05:00"], "urls": [ ... ] }
+// or legacy plain array of urls.
+function load_playlist(my) {
+  if (!my.playlist_path || my.playlist) return;
+  try {
+    const playpath = path.join(__dirname, my.playlist_path);
+    const data = JSON.parse(fs.readFileSync(playpath, 'utf8'));
+    if (Array.isArray(data)) {
+      my.playlist = data;
+      my.playlist_times = [];
     } else {
-      // Advance to next in the play list
-      my.playlist_index = (my.playlist_index + 1) % my.playlist.length;
-      console.log('Advance playlist_index', my.playlist_index, timeNow());
+      my.playlist = data.urls || [];
+      my.playlist_times = data.times || [];
     }
+    my.playlist_index = 0;
+    console.log('Loaded playlist with', my.playlist.length, 'URLs', 'times', my.playlist_times, timeNow());
+  } catch (err) {
+    console.error('Failed to load playlist:', err.message);
   }
+}
+
+// Load the current url (playlist item or root) and schedule the next advance
+function load_root_index(my) {
+  load_playlist(my);
 
   // Determine URL to load
   let url_to_load = my.root_index_path;
   if (my.playlist && my.playlist.length > 0) {
     url_to_load = my.playlist[my.playlist_index];
-    console.log('Loading playlist item', my.playlist_index + 1, 'of', my.playlist.length, ':', url_to_load);
+    console.log('Loading playlist item', my.playlist_index + 1, 'of', my.playlist.length, ':', url_to_load, timeNow());
   }
 
   const url_options = { query: my.opt };
@@ -157,6 +174,25 @@ function load_root_index(my) {
   } else {
     my.mainWindow.loadFile(url_to_load, url_options);
   }
+
+  schedule_playlist_timer(my);
+}
+
+// Period for current playlist item: times[index % times.length] / speed
+function schedule_playlist_timer(my) {
+  clearTimeout(my.playlist_timer);
+  my.playlist_timer = null;
+  const times = my.playlist_times;
+  if (!my.playlist || my.playlist.length === 0 || !times || times.length === 0) return;
+  const period = times[my.playlist_index % times.length];
+  const secs = parse_period(period) / my.speed;
+  console.log('playlist timer', period, 'speed', my.speed, 'secs', secs);
+  if (!(secs > 0)) return;
+  my.playlist_timer = setTimeout(() => playlist_advance(my), secs * 1000);
+}
+
+function playlist_advance(my) {
+  load_playlist_next(my);
 }
 
 function load_playlist_next(my) {

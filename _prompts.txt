@@ -5,3 +5,29 @@ v0.1
 update nodejs app in node to latest version
 to fix npm install warnings:
 16 vulnerabilities (10 moderate, 4 high, 2 critical)
+
+v0.2
+
+update node script node/electon-main.js
+to use new playlist json format:
+{
+  "times": ["0:10", "05:00"],
+  "urls": [
+    "https://woke-mind.github.io/woke-words/words/",
+    "https://jht9629-nyu.github.io/ims-2026-jht/ims02/shader-trail/index.html",
+    "https://jht9629-nyu.github.io/blackfacts/src/index.html?v=63&group=s1",
+    "https://jht9629-nyu.github.io/ims-2026-jht/ims03/Marching-Ripples/index.html",
+  ]
+}
+use "times" property  as timer period 
+for each entry in "urls" 
+cycling between entries in "times"
+use the same format as restart_period, "HH:MM:SS" hours:minutes:seconds
+add --speed argv parameter that will scale the time period 
+by division, eg. --speed 2 will half all times periods
+
+
+npm run start -- 
+--restart_period $PERIOD --full 0 --portrait 0.90 --screen 1 
+--playlist ru-play.json
+--speed 2 

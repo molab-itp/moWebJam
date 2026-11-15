@@ -4,7 +4,7 @@
 export function setup_restart(my, load_root_index) {
   let per = 0;
   if (my.opt.restart_period) {
-    per = parse_period(my.opt.restart_period);
+    per = parse_period(my.opt.restart_period) / (my.speed || 1);
   } else if (my.opt.restart_time) {
     per = parse_restart_time(my.opt.restart_time);
   }
@@ -25,11 +25,11 @@ export function setup_restart(my, load_root_index) {
 
 // convert hours:minutes:seconds string into number of seconds
 //
-function parse_period(period_str) {
+export function parse_period(period_str) {
   // hh:mm:ss
   // mm:ss
   // ss
-  let arr = period_str.split(':').map(parseFloat);
+  let arr = String(period_str).split(':').map(parseFloat);
   if (arr.length == 1) {
     arr[2] = arr[0];
     arr[1] = 0;

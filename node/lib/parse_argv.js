@@ -7,6 +7,12 @@ import fs from 'fs';
 //  restart at given time
 // --restart_period
 //  restart every period
+// --speed n
+//  divide all time periods by n, eg. --speed 2 halves periods
+// --playlist file.json
+//  { "times": ["0:10", "05:00"], "urls": [...] }
+//  urls[i] is shown for times[i % times.length] (hh:mm:ss | mm:ss | ss)
+//  a plain array of urls is also accepted (uses --restart_period)
 // --u
 //  store prefix to partition localstorage
 // --s
@@ -61,6 +67,14 @@ export function parse_argv(my, argv) {
         break;
       case '--restart_period':
         my.opt.restart_period = argv[++index];
+        break;
+      case '--speed':
+        my.speed = parseFloat(argv[++index]);
+        if (!(my.speed > 0)) {
+          console.log('Invalid --speed, using 1');
+          my.speed = 1;
+        }
+        console.log('speed:', my.speed);
         break;
       case '--h':
         my.opt.h = argv[++index];
